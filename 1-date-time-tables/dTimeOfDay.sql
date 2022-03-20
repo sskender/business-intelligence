@@ -1,5 +1,7 @@
 -- TIME OF DAY TABLE
 
+-- https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql?view=sql-server-ver15
+
 CREATE TABLE [dbo].[dTimeOfDay] (
 	[idTimeOfDay] INT IDENTITY NOT NULL PRIMARY KEY,
 	[type] VARCHAR(20),
@@ -29,7 +31,7 @@ VALUES (
 
 
 DECLARE @time_i TIME
-SET @time_i = CONVERT(TIME, '00:00:00', 108)  -- https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql?view=sql-server-ver15
+SET @time_i = CONVERT(TIME, '00:00:00', 108)  
 
 DECLARE @secondsMidnight_i INT
 SET @secondsMidnight_i = 0
