@@ -22,7 +22,7 @@ CREATE TABLE [dbo].[dDate] (
     [season] VARCHAR(6),
     [event] VARCHAR(200),
     [isHoliday] VARCHAR(3),
-    [holidayName] VARCHAR(100)
+    [holidayName] VARCHAR(200)
 )
 
 
@@ -108,6 +108,97 @@ BEGIN
     SET @date_i = DATEADD(d, 1, @date_i)
 
 END
+
+
+-- ADD HOLIDAYS
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'New Years Day'
+WHERE
+    [day] = 1 AND [month] = 1
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Epiphany'
+WHERE
+    [day] = 6 AND [month] = 1
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Labour Day'
+WHERE
+    [day] = 1 AND [month] = 5
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Statehood Day'
+WHERE
+    ([day] = 30 AND [month] = 5 AND [year] <= 2001) OR
+    ([day] = 30 AND [month] = 5 AND [year] >= 2020)
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Anti-Fascist Struggle Day'
+WHERE
+    [day] = 22 AND [month] = 6
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Victory and Homeland Thanksgiving Day and Day of Croatian Defenders'
+WHERE
+    [day] = 5 AND [month] = 8
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Assumption of Mary'
+WHERE
+    [day] = 15 AND [month] = 8
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'All Saint Day'
+WHERE
+    [day] = 1 AND [month] = 11
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Day of Remembrance of the Victims of the Homeland War and Day of Remembrance of suffering of Vukovar and Škabrnja'
+WHERE
+    [day] = 18 AND [month] = 11 AND [year] >= 2020
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Christmas Day'
+WHERE
+    [day] = 25 AND [month] = 12
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Saint Stephens Day'
+WHERE
+    [day] = 26 AND [month] = 12
 
 
 -- ADD EVENTS
