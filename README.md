@@ -1,7 +1,6 @@
 # Business Intelligence
 Business Intelligence FER labs
 
-
 ## Course Description
 Dimensional Model, Data Warehouse Architecture, Reporting and Visualization Tools from Data Warehouse, Real-Time Data Warehouses, OLAP, ETL.
 
@@ -12,3 +11,6 @@ Dimensional Model, Data Warehouse Architecture, Reporting and Visualization Tool
 - operate the basic OLAP technologies
 - employ basic BI tools
 - produce a BI tool prototype
+
+#### Try online
+[SQL FIDDLE](http://sqlfiddle.com/#!18)
