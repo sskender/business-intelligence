@@ -205,183 +205,31 @@ SET
     [isHoliday] = 'YES',
     [holidayName] = 'Easter Sunday'
 WHERE
-    [day] = 23 AND [month] = 4 AND [year] = 2000
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 15 AND [month] = 4 AND [year] = 2001
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 31 AND [month] = 3 AND [year] = 2002
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 20 AND [month] = 4 AND [year] = 2003
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 11 AND [month] = 4 AND [year] = 2004
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 27 AND [month] = 3 AND [year] = 2005
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 16 AND [month] = 4 AND [year] = 2006
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 8 AND [month] = 4 AND [year] = 2007
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 23 AND [month] = 3 AND [year] = 2008
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 12 AND [month] = 4 AND [year] = 2009
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 4 AND [month] = 4 AND [year] = 2010
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 24 AND [month] = 4 AND [year] = 2011
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 8 AND [month] = 4 AND [year] = 2012
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 31 AND [month] = 3 AND [year] = 2013
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 20 AND [month] = 4 AND [year] = 2014
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 5 AND [month] = 4 AND [year] = 2015
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 27 AND [month] = 3 AND [year] = 2016
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 16 AND [month] = 4 AND [year] = 2017
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 1 AND [month] = 4 AND [year] = 2018
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 21 AND [month] = 4 AND [year] = 2019
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 12 AND [month] = 4 AND [year] = 2020
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 4 AND [month] = 4 AND [year] = 2021
-
-UPDATE [dbo].[dDate]
-SET
-    [isWorkday] = 'NO',
-    [isHoliday] = 'YES',
-    [holidayName] = 'Easter Sunday'
-WHERE
-    [day] = 17 AND [month] = 4 AND [year] = 2022
+    [formattedDate] IN (
+        '23.04.2000.',
+        '15.04.2001.',
+        '31.03.2002.',
+        '20.04.2003.',
+        '11.04.2004.',
+        '27.03.2005.',
+        '16.04.2006.',
+        '08.04.2007.',
+        '23.03.2008.',
+        '12.04.2009.',
+        '04.04.2010.',
+        '24.04.2011.',
+        '08.04.2012.',
+        '31.03.2013.',
+        '20.04.2014.',
+        '05.04.2015.',
+        '27.03.2016.',
+        '16.04.2017.',
+        '01.04.2018.',
+        '21.04.2019.',
+        '12.04.2020.',
+        '04.04.2021.',
+        '17.4.2022.'
+    )
 
 UPDATE [dbo].[dDate]
 SET
