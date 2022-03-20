@@ -46,12 +46,12 @@ DECLARE @end_date DATE
 DECLARE @date_i DATE
 
 SET @start_date = CONVERT(DATE, '1.1.2000', 104)
-SET @end_date = CONVERT(DATE, '20.3.2022', 104)
+SET @end_date = CONVERT(DATE, '1.1.2023', 104)
 SET @date_i = @start_date
 
 SET DATEFIRST 1
 
-WHILE @date_i <= @end_date
+WHILE @date_i < @end_date
 BEGIN
     INSERT INTO [dbo].[dDate] (
         [date],
@@ -106,7 +106,6 @@ BEGIN
     )
 
     SET @date_i = DATEADD(d, 1, @date_i)
-
 END
 
 
@@ -199,6 +198,214 @@ SET
     [holidayName] = 'Saint Stephens Day'
 WHERE
     [day] = 26 AND [month] = 12
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 23 AND [month] = 4 AND [year] = 2000
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 15 AND [month] = 4 AND [year] = 2001
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 31 AND [month] = 3 AND [year] = 2002
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 20 AND [month] = 4 AND [year] = 2003
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 11 AND [month] = 4 AND [year] = 2004
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 27 AND [month] = 3 AND [year] = 2005
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 16 AND [month] = 4 AND [year] = 2006
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 8 AND [month] = 4 AND [year] = 2007
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 23 AND [month] = 3 AND [year] = 2008
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 12 AND [month] = 4 AND [year] = 2009
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 4 AND [month] = 4 AND [year] = 2010
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 24 AND [month] = 4 AND [year] = 2011
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 8 AND [month] = 4 AND [year] = 2012
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 31 AND [month] = 3 AND [year] = 2013
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 20 AND [month] = 4 AND [year] = 2014
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 5 AND [month] = 4 AND [year] = 2015
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 27 AND [month] = 3 AND [year] = 2016
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 16 AND [month] = 4 AND [year] = 2017
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 1 AND [month] = 4 AND [year] = 2018
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 21 AND [month] = 4 AND [year] = 2019
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 12 AND [month] = 4 AND [year] = 2020
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 4 AND [month] = 4 AND [year] = 2021
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Sunday'
+WHERE
+    [day] = 17 AND [month] = 4 AND [year] = 2022
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Easter Monday'
+WHERE
+    [date] IN (
+        SELECT DATEADD(d, 1, CONVERT(DATE, [date], 104)) 
+        FROM [dbo].[dDate] 
+        WHERE [holidayName] = 'Easter Sunday'
+    )
+
+UPDATE [dbo].[dDate]
+SET
+    [isWorkday] = 'NO',
+    [isHoliday] = 'YES',
+    [holidayName] = 'Corpus Christi'
+WHERE
+    [date] IN (
+        SELECT DATEADD(d, 60, CONVERT(DATE, [date], 104)) 
+        FROM [dbo].[dDate] 
+        WHERE [holidayName] = 'Easter Sunday'
+    )
 
 
 -- ADD EVENTS
