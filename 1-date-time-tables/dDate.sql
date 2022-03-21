@@ -4,15 +4,15 @@
 -- https://database.guide/get-the-day-of-the-year-from-a-date-in-sql-server-t-sql/
 
 CREATE TABLE [dbo].[dDate] (
-	[idDate] INT IDENTITY NOT NULL PRIMARY KEY,
-	[date] DATE,
-	[type] VARCHAR(20),
-	[formattedDate] VARCHAR(11),
-	[day] INT,
-	[month] INT,
-	[year] INT,
-	[quartal] INT,
-	[dayOfWeek] INT,
+    [idDate] INT IDENTITY NOT NULL PRIMARY KEY,
+    [date] DATE,
+    [type] VARCHAR(20),
+    [formattedDate] VARCHAR(11),
+    [day] INT,
+    [month] INT,
+    [year] INT,
+    [quartal] INT,
+    [dayOfWeek] INT,
     [dayOfTheYear] INT,
     [weekOfTheYear] INT,
     [dayOfWeekName] VARCHAR(10),
@@ -27,17 +27,17 @@ CREATE TABLE [dbo].[dDate] (
 
 
 INSERT INTO [dbo].[dDate] (
-	[type]
+    [type]
 )
 VALUES (
-	'unknown'
+    'unknown'
 )
 
 INSERT INTO [dbo].[dDate] (
-	[type]
+    [type]
 )
 VALUES (
-	'has not happened'
+    'has not happened'
 )
 
 
