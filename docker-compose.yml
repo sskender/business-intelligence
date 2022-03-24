@@ -6,7 +6,13 @@ services:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=PIPassword123
+      - SA_PASSWORD=PIPasswordStrong123
       - MSSQL_PID=Developer
     ports:
       - "1433:1433"
+    restart: always
+    volumes:
+      - sqldb_data:/var/opt/mssql
+
+volumes:
+  sqldb_data:
