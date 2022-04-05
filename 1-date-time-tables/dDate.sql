@@ -100,9 +100,9 @@ BEGIN
             WHEN @date_i BETWEEN CONVERT(DATE, CONCAT('23.9.', YEAR(@date_i)), 104) AND CONVERT(DATE, CONCAT('20.12.', YEAR(@date_i)), 104) THEN 'Autumn'
             ELSE 'Winter'
         END,
-        NULL,
+        'No events',
         'NO',
-        NULL
+        'Not holiday'
     )
 
     SET @date_i = DATEADD(d, 1, @date_i)
