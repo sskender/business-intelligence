@@ -32,7 +32,7 @@ CREATE TABLE [dbo].[dEmployees] (
     [PostalCode] VARCHAR(20),
     [CityName] VARCHAR(50),
     [Region] VARCHAR(50),
-    [Country] VARCHAR(50),    
+    [Country] VARCHAR(50),
     [HomePhone] VARCHAR(20),
     [Extension] VARCHAR(10),
     [Notes] VARCHAR(1000),
@@ -62,9 +62,9 @@ CREATE TABLE [dbo].[dProducts] (
     [SupplierHomePage] VARCHAR(100),
     [CategoryName] VARCHAR(50),
     [CategoryDescription] VARCHAR(100),
-    [CountryOfOrigin] VARCHAR(20),
+    [CountryOfOrigin] VARCHAR(50),
     [QuantityPerUnit] VARCHAR(50),
-    [UnitPrice] DECIMAL(2),
+    [UnitPrice] MONEY,
     [UnitsInStock] INT
 )
 
@@ -81,7 +81,7 @@ CREATE TABLE [dbo].[dShippments] (
     [PostalCode] VARCHAR(20),
     [CityName] VARCHAR(50),
     [Region] VARCHAR(50),
-    [Country] VARCHAR(50),
+    [Country] VARCHAR(50)
 )
 
 CREATE TABLE [dbo].[dDiscounts] (
@@ -105,11 +105,11 @@ CREATE TABLE [dbo].[fOrderItems] (
     [RequiredTimeID] INT,
     [ShippedDateID] INT,
     [ShippedTimeID] INT,
-    [UnitPrice] DECIMAL(2),
+    [UnitPrice] MONEY,
     [Quantity] INT,
     [Discount] DECIMAL(2),
     [DiscountID] INT,
-    [UnitPriceWithDiscount] DECIMAL(2)
+    [UnitPriceWithDiscount] MONEY
 )
 
 CREATE TABLE [dbo].[fOrders] (
@@ -127,12 +127,12 @@ CREATE TABLE [dbo].[fOrders] (
     [ShippedTimeID] INT,
     [ProductsNumber] INT,
     [DistinctProductsNumber] INT,
-    [Freight] DECIMAL(2),
-    [TotalItemsPrice] DECIMAL(2),
-    [TotalItemsPriceWithFreight] DECIMAL(2),
+    [Freight] MONEY,
+    [TotalItemsPrice] MONEY,
+    [TotalItemsPriceWithFreight] MONEY,
     [DiscountApplied] BIT,
-    [TotalDiscount] DECIMAL(2),
-    [TotalItemsPriceWithoutDiscount] DECIMAL(2),
+    [TotalDiscount] MONEY,
+    [TotalItemsPriceWithoutDiscount] MONEY,
     [OrderedToShippedHours] INT,
     [OrderedToRequiredHours] INT,
     [ShippedToRequiredHours] INT,
