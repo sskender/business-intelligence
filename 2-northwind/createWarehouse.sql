@@ -1,6 +1,6 @@
 -- NORTHWIND DATA WAREHOUSE
 
-USE Northwind_SkenderSPTEST -- TODO RENAME
+USE [Northwind_SkenderSPTEST2] -- TODO RENAME
 GO
 
 -- NORTH DIM TABLES
@@ -49,28 +49,23 @@ CREATE TABLE [dbo].[dShippers] (
 CREATE TABLE [dbo].[dProducts] (
     [ProductID] INT IDENTITY NOT NULL PRIMARY KEY,
     [ProductName] VARCHAR(100),
-    [CategoryID] INT,
+    [SupplierCompanyName] VARCHAR(50),
+    [SupplierContactName] VARCHAR(50),
+    [SupplierContactTitle] VARCHAR(50),
+    [SupplierAddress] VARCHAR(50),
+    [SupplierPostalCode] VARCHAR(20),
+    [SupplierCityName] VARCHAR(50),
+    [SupplierRegion] VARCHAR(50),
+    [SupplierCountry] VARCHAR(50),
+    [SupplierPhone] VARCHAR(20),
+    [SupplierFax] VARCHAR(20),
+    [SupplierHomePage] VARCHAR(100),
     [CategoryName] VARCHAR(50),
     [CategoryDescription] VARCHAR(100),
     [CountryOfOrigin] VARCHAR(20),
     [QuantityPerUnit] VARCHAR(50),
     [UnitPrice] DECIMAL(2),
     [UnitsInStock] INT
-)
-
-CREATE TABLE [dbo].[dSuppliers] (
-    [SupplierID] INT IDENTITY NOT NULL PRIMARY KEY,
-    [CompanyName] VARCHAR(50),
-    [ContactName] VARCHAR(50),
-    [ContactTitle] VARCHAR(50),
-    [Address] VARCHAR(50),
-    [PostalCode] VARCHAR(20),
-    [CityName] VARCHAR(50),
-    [Region] VARCHAR(50),
-    [Country] VARCHAR(50),
-    [Phone] VARCHAR(20),
-    [Fax] VARCHAR(20),
-    [HomePage] VARCHAR(100)
 )
 
 -- ADDITIONAL TABLES
@@ -97,9 +92,8 @@ CREATE TABLE [dbo].[dDiscounts] (
 -- FACT TABLES
 CREATE TABLE [dbo].[fOrderItems] (
     [OrderItemID] INT IDENTITY NOT NULL PRIMARY KEY,
-    [OrderID] INT,  -- TODO PRIM KEY / ADD UNIQUE ???
+    [OrderID] INT,
     [ProductID] INT,
-    [SupplierID] INT,
     [CustomerID] INT,
     [EmployeeID] INT,
     [PaymentMethodID] INT,
@@ -116,7 +110,6 @@ CREATE TABLE [dbo].[fOrderItems] (
     [Discount] DECIMAL(2),
     [DiscountID] INT,
     [UnitPriceWithDiscount] DECIMAL(2)
-    -- TODO additional metrics / remove metrics ???
 )
 
 CREATE TABLE [dbo].[fOrders] (
@@ -132,13 +125,14 @@ CREATE TABLE [dbo].[fOrders] (
     [RequiredTimeID] INT,
     [ShippedDateID] INT,
     [ShippedTimeID] INT,
-    [Freight] DECIMAL(2),
     [ProductsNumber] INT,
     [DistinctProductsNumber] INT,
-    [TotalPrice] DECIMAL(2),
+    [Freight] DECIMAL(2),
+    [TotalItemsPrice] DECIMAL(2),
+    [TotalItemsPriceWithFreight] DECIMAL(2),
     [DiscountApplied] BIT,
     [TotalDiscount] DECIMAL(2),
-    [TotalPriceWithoutDiscount] DECIMAL(2),
+    [TotalItemsPriceWithoutDiscount] DECIMAL(2),
     [OrderedToShippedHours] INT,
     [OrderedToRequiredHours] INT,
     [ShippedToRequiredHours] INT,
