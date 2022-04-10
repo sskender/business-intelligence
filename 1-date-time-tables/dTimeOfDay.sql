@@ -1,7 +1,10 @@
--- TIME OF DAY TABLE
-
+-- CREATE TIME OF DAY DIM TABLE
 -- https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql?view=sql-server-ver15
 
+USE [Northwind_SkenderSPTEST5] -- TODO RENAME
+GO
+
+-- TIME OF DAY TABLE
 CREATE TABLE [dbo].[dTimeOfDay] (
 	[idTimeOfDay] INT IDENTITY NOT NULL PRIMARY KEY,
 	[type] VARCHAR(20),
