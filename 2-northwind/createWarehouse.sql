@@ -1,6 +1,6 @@
 -- CREATE NORTHWIND DATA WAREHOUSE
 
-USE [Northwind_SkenderSPTEST5] -- TODO RENAME
+USE [Northwind_SkenderSP]
 GO
 
 -- NORTH DIM TABLES
@@ -90,7 +90,7 @@ CREATE TABLE [dbo].[dDiscounts] (
 )
 
 -- FACT TABLES
-CREATE TABLE [dbo].[fOrderItems] (
+CREATE TABLE [dbo].[cOrderItems] (
     [OrderID] INT NOT NULL,
     [ProductID] INT NOT NULL,
     [CustomerID] INT,
@@ -111,8 +111,8 @@ CREATE TABLE [dbo].[fOrderItems] (
     [UnitPriceWithDiscount] MONEY
 )
 
-CREATE TABLE [dbo].[fOrders] (
-    [OrderID] INT IDENTITY NOT NULL PRIMARY KEY,
+CREATE TABLE [dbo].[cOrders] (
+    [OrderID] INT NOT NULL,
     [CustomerID] INT,
     [EmployeeID] INT,
     [PaymentMethodID] INT,
@@ -129,38 +129,8 @@ CREATE TABLE [dbo].[fOrders] (
     [Freight] MONEY,
     [TotalItemsPrice] MONEY,
     [TotalItemsPriceWithFreight] MONEY,
-    [DiscountApplied] BIT,
     [TotalDiscount] MONEY,
     [TotalItemsPriceWithoutDiscount] MONEY,
     [OrderedToShippedDuration] INT,
     [Shipped] BIT
 )
-
--- ADD CONSTRAINTS
-ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT PK_fOrderItems PRIMARY KEY (OrderID, ProductID)
-ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_OrderID FOREIGN KEY (OrderID) REFERENCES [dbo].[fOrders](OrderID)
-ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_ProductID FOREIGN KEY (ProductID) REFERENCES [dbo].[dProducts](ProductID)
-ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_CustomerID FOREIGN KEY (CustomerID) REFERENCES [dbo].[dCustomers](CustomerID)
-ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_EmployeeID FOREIGN KEY (EmployeeID) REFERENCES [dbo].[dEmployees](EmployeeID)
-ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_PaymentMethodID FOREIGN KEY (PaymentMethodID) REFERENCES [dbo].[dPaymentMethod](PaymentMethodID)
-ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_ShipperID FOREIGN KEY (ShipperID) REFERENCES [dbo].[dShippers](ShipperID)
-ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_ShippmentID FOREIGN KEY (ShippmentID) REFERENCES [dbo].[dShippments](ShippmentID)
-ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_OrderDateID FOREIGN KEY (OrderDateID) REFERENCES [dbo].[dDate](idDate)
-ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_OrderTimeID FOREIGN KEY (OrderTimeID) REFERENCES [dbo].[dTimeOfDay](idTimeOfDay)
-ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_RequiredDateID FOREIGN KEY (RequiredDateID) REFERENCES [dbo].[dDate](idDate)
-ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_RequiredTimeID FOREIGN KEY (RequiredTimeID) REFERENCES [dbo].[dTimeOfDay](idTimeOfDay)
-ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_ShippedDateID FOREIGN KEY (ShippedDateID) REFERENCES [dbo].[dDate](idDate)
-ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_ShippedTimeID FOREIGN KEY (ShippedTimeID) REFERENCES [dbo].[dTimeOfDay](idTimeOfDay)
-ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_DiscountID FOREIGN KEY (DiscountID) REFERENCES [dbo].[dDiscounts](DiscountID)
-
-ALTER TABLE [dbo].[fOrders] ADD CONSTRAINT FK_fOrders_CustomerID FOREIGN KEY (CustomerID) REFERENCES [dbo].[dCustomers](CustomerID)
-ALTER TABLE [dbo].[fOrders] ADD CONSTRAINT FK_fOrders_EmployeeID FOREIGN KEY (EmployeeID) REFERENCES [dbo].[dEmployees](EmployeeID)
-ALTER TABLE [dbo].[fOrders] ADD CONSTRAINT FK_fOrders_PaymentMethodID FOREIGN KEY (PaymentMethodID) REFERENCES [dbo].[dPaymentMethod](PaymentMethodID)
-ALTER TABLE [dbo].[fOrders] ADD CONSTRAINT FK_fOrders_ShipperID FOREIGN KEY (ShipperID) REFERENCES [dbo].[dShippers](ShipperID)
-ALTER TABLE [dbo].[fOrders] ADD CONSTRAINT FK_fOrders_ShippmentID FOREIGN KEY (ShippmentID) REFERENCES [dbo].[dShippments](ShippmentID)
-ALTER TABLE [dbo].[fOrders] ADD CONSTRAINT FK_fOrders_OrderDateID FOREIGN KEY (OrderDateID) REFERENCES [dbo].[dDate](idDate)
-ALTER TABLE [dbo].[fOrders] ADD CONSTRAINT FK_fOrders_OrderTimeID FOREIGN KEY (OrderTimeID) REFERENCES [dbo].[dTimeOfDay](idTimeOfDay)
-ALTER TABLE [dbo].[fOrders] ADD CONSTRAINT FK_fOrders_RequiredDateID FOREIGN KEY (RequiredDateID) REFERENCES [dbo].[dDate](idDate)
-ALTER TABLE [dbo].[fOrders] ADD CONSTRAINT FK_fOrders_RequiredTimeID FOREIGN KEY (RequiredTimeID) REFERENCES [dbo].[dTimeOfDay](idTimeOfDay)
-ALTER TABLE [dbo].[fOrders] ADD CONSTRAINT FK_fOrders_ShippedDateID FOREIGN KEY (ShippedDateID) REFERENCES [dbo].[dDate](idDate)
-ALTER TABLE [dbo].[fOrders] ADD CONSTRAINT FK_fOrders_ShippedTimeID FOREIGN KEY (ShippedTimeID) REFERENCES [dbo].[dTimeOfDay](idTimeOfDay)

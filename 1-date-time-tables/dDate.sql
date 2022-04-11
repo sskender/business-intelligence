@@ -2,7 +2,7 @@
 -- https://docs.microsoft.com/en-us/sql/t-sql/functions/datepart-transact-sql?view=sql-server-ver15
 -- https://database.guide/get-the-day-of-the-year-from-a-date-in-sql-server-t-sql/
 
-USE [Northwind_SkenderSPTEST5] -- TODO RENAME
+USE [Northwind_SkenderSP]
 GO
 
 -- DATE TABLE

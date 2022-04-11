@@ -1,6 +1,6 @@
 -- IMPORT DATA TO NORTHWIND DATA WAREHOUSE
 
-USE [Northwind_SkenderSPTEST5] -- TODO RENAME
+USE [Northwind_SkenderSP]
 GO
 
 -- IMPORT CUSTOMERS
@@ -245,21 +245,7 @@ UPDATE [dbo].[dDiscounts] SET [DiscountDesc] = 'unknown' WHERE [DiscountDesc] IS
 
 
 -- IMPORT ORDER ITEMS
-DECLARE @UnknownPaymentMethodID INT =
-    (
-        SELECT TOP 1 [PaymentMethodID]
-        FROM [dbo].[dPaymentMethods]
-        WHERE [PaymentMethod] = 'unknown'
-    )
-
-DECLARE @UnknownDiscountID INT =
-    (
-        SELECT TOP 1 [DiscountID]
-        FROM [dbo].[dDiscounts]
-        WHERE [DiscountDesc] = 'unknown'
-    )
-
-INSERT INTO [dbo].[fOrderItems] (
+INSERT INTO [dbo].[cOrderItems] (
     [OrderID],
     [ProductID],
     [CustomerID],
@@ -312,7 +298,7 @@ FROM
 LEFT JOIN
     [NorthWind2015].[dbo].[Orders]
 ON
-    [NorthWind2015].[dbo].[orderItems].[OrderID] = [NorthWind2015].[dbo].[Orders].[OrderID]
+    [NorthWind2015].[dbo].[OrderItems].[OrderID] = [NorthWind2015].[dbo].[Orders].[OrderID]
 LEFT JOIN
     [dbo].[dPaymentMethods]
 ON
@@ -354,10 +340,197 @@ LEFT JOIN
 ON
     CONVERT(TIME, [NorthWind2015].[dbo].[Orders].[RequiredDate]) = [RequiredTimeTable].[formattedTime]
 
-UPDATE [dbo].[fOrderItems] SET [PaymentMethodID] = @UnknownPaymentMethodID WHERE [PaymentMethodID] IS NULL
-UPDATE [dbo].[fOrderItems] SET [ShippmentID] = 1 WHERE [ShippmentID] IS NULL
-UPDATE [dbo].[fOrderItems] SET [RequiredDateID] = 1 WHERE [RequiredDateID] IS NULL
-UPDATE [dbo].[fOrderItems] SET [RequiredTimeID] = 1 WHERE [RequiredTimeID] IS NULL
-UPDATE [dbo].[fOrderItems] SET [ShippedDateID] = 1 WHERE [ShippedDateID] IS NULL
-UPDATE [dbo].[fOrderItems] SET [ShippedTimeID] = 1 WHERE [ShippedTimeID] IS NULL
-UPDATE [dbo].[fOrderItems] SET [DiscountID] = @UnknownDiscountID WHERE [DiscountID] IS NULL
+DECLARE @UnknownPaymentMethodID INT =
+    (
+        SELECT TOP 1 [PaymentMethodID]
+        FROM [dbo].[dPaymentMethods]
+        WHERE [PaymentMethod] = 'unknown'
+    )
+
+DECLARE @UnknownDiscountID INT =
+    (
+        SELECT TOP 1 [DiscountID]
+        FROM [dbo].[dDiscounts]
+        WHERE [DiscountDesc] = 'unknown'
+    )
+
+UPDATE [dbo].[cOrderItems] SET [PaymentMethodID] = @UnknownPaymentMethodID WHERE [PaymentMethodID] IS NULL
+UPDATE [dbo].[cOrderItems] SET [ShippmentID] = 1 WHERE [ShippmentID] IS NULL
+UPDATE [dbo].[cOrderItems] SET [RequiredDateID] = 1 WHERE [RequiredDateID] IS NULL
+UPDATE [dbo].[cOrderItems] SET [RequiredTimeID] = 1 WHERE [RequiredTimeID] IS NULL
+UPDATE [dbo].[cOrderItems] SET [ShippedDateID] = 1 WHERE [ShippedDateID] IS NULL
+UPDATE [dbo].[cOrderItems] SET [ShippedTimeID] = 1 WHERE [ShippedTimeID] IS NULL
+UPDATE [dbo].[cOrderItems] SET [DiscountID] = @UnknownDiscountID WHERE [DiscountID] IS NULL
+
+
+-- IMPORT ORDERS
+INSERT INTO [dbo].[cOrders] (
+    [OrderID],
+    [CustomerID],
+    [EmployeeID],
+    [PaymentMethodID],
+    [ShipperID],
+    [ShippmentID],
+    [OrderDateID],
+    [OrderTimeID],
+    [RequiredDateID],
+    [RequiredTimeID],
+    [ShippedDateID],
+    [ShippedTimeID],
+    [ProductsNumber],
+    [DistinctProductsNumber],
+    [Freight],
+    [TotalItemsPrice],
+    [TotalItemsPriceWithFreight],
+    [TotalDiscount],
+    [TotalItemsPriceWithoutDiscount],
+    [OrderedToShippedDuration],
+    [Shipped]
+)
+SELECT
+    CASE
+        WHEN [NorthWind2015].[dbo].[OrderItems].[OrderId] IS NULL
+            THEN 11088
+        ELSE
+            [NorthWind2015].[dbo].[OrderItems].[OrderId]
+    END,
+    [dbo].[dCustomers].[CustomerID],
+    [NorthWind2015].[dbo].[Orders].[EmployeeID],
+    [dbo].[dPaymentMethods].[PaymentMethodID],
+    [dbo].[dShippers].[ShipperID],
+    [dbo].[dShippments].[ShippmentID],
+    [OrderDateTable].[idDate],
+    [OrderTimeTable].[idTimeOfDay],
+    [ShippedDateTable].[idDate],
+    [ShippedTimeTable].[idTimeOfDay],
+    [RequiredDateTable].[idDate],
+    [RequiredTimeTable].[idTimeOfDay],
+    SUM([NorthWind2015].[dbo].[OrderItems].[Quantity]),
+    COUNT(DISTINCT [NorthWind2015].[dbo].[OrderItems].[ProductID]),
+    [NorthWind2015].[dbo].[Orders].[Freight],
+    SUM((1.0 * [NorthWind2015].[dbo].[OrderItems].[UnitPrice] * (1.0 -  [NorthWind2015].[dbo].[OrderItems].[Discount])) * [NorthWind2015].[dbo].[OrderItems].[Quantity]),
+    SUM((1.0 * [NorthWind2015].[dbo].[OrderItems].[UnitPrice] * (1.0 -  [NorthWind2015].[dbo].[OrderItems].[Discount])) * [NorthWind2015].[dbo].[OrderItems].[Quantity]) + [NorthWind2015].[dbo].[Orders].[Freight],
+    SUM([NorthWind2015].[dbo].[OrderItems].[UnitPrice] * [NorthWind2015].[dbo].[OrderItems].[Quantity]) - SUM((1.0 * [NorthWind2015].[dbo].[OrderItems].[UnitPrice] * (1.0 -  [NorthWind2015].[dbo].[OrderItems].[Discount])) * [NorthWind2015].[dbo].[OrderItems].[Quantity]),
+    SUM([NorthWind2015].[dbo].[OrderItems].[UnitPrice] * [NorthWind2015].[dbo].[OrderItems].[Quantity]),
+    CASE
+        WHEN [NorthWind2015].[dbo].[Orders].[ShippedDate] IS NULL
+            THEN 0
+        WHEN [NorthWind2015].[dbo].[Orders].[OrderDate] IS NULL
+            THEN 0
+        ELSE
+            DATEDIFF(second , [OrderDate], [ShippedDate])
+    END,
+    CASE
+        WHEN [NorthWind2015].[dbo].[Orders].[ShippedDate] IS NULL THEN 0
+        ELSE 1
+    END
+FROM
+    [NorthWind2015].[dbo].[Orders]
+LEFT JOIN
+    [NorthWind2015].[dbo].[OrderItems]
+ON
+    [NorthWind2015].[dbo].[OrderItems].[OrderID] = [NorthWind2015].[dbo].[Orders].[OrderID]
+LEFT JOIN
+    [dbo].[dPaymentMethods]
+ON
+    [NorthWind2015].[dbo].[Orders].[PaymentMethod] = [dbo].[dPaymentMethods].[PaymentMethod]
+LEFT JOIN
+    [dbo].[dCustomers]
+ON
+    [NorthWind2015].[dbo].[Orders].[CustomerID] = [dbo].[dCustomers].[CustomerIDDB]
+LEFT JOIN
+    [dbo].[dShippers]
+ON
+    [NorthWind2015].[dbo].[Orders].[ShipVia] = [dbo].[dShippers].[ShipperID]
+LEFT JOIN
+    [dbo].[dShippments]
+ON
+    [NorthWind2015].[dbo].[Orders].[ShipName] = [dbo].[dShippments].[ShipName]
+    AND
+    [NorthWind2015].[dbo].[Orders].[ShipAddress] = [dbo].[dShippments].[ShipAddress]
+LEFT JOIN
+    [dbo].[dDate] AS [OrderDateTable]
+ON
+    CONVERT(DATE, [NorthWind2015].[dbo].[Orders].[OrderDate]) = [OrderDateTable].[date]
+LEFT JOIN
+    [dbo].[dDate] AS [ShippedDateTable]
+ON
+    CONVERT(DATE, [NorthWind2015].[dbo].[Orders].[ShippedDate]) = [ShippedDateTable].[date]
+LEFT JOIN
+    [dbo].[dDate] AS [RequiredDateTable]
+ON
+    CONVERT(DATE, [NorthWind2015].[dbo].[Orders].[RequiredDate]) = [RequiredDateTable].[date]
+LEFT JOIN
+    [dbo].[dTimeOfDay] AS [OrderTimeTable]
+ON
+    CONVERT(TIME, [NorthWind2015].[dbo].[Orders].[OrderDate]) = [OrderTimeTable].[formattedTime]
+LEFT JOIN
+    [dbo].[dTimeOfDay] AS [ShippedTimeTable]
+ON
+    CONVERT(TIME, [NorthWind2015].[dbo].[Orders].[ShippedDate]) = [ShippedTimeTable].[formattedTime]
+LEFT JOIN
+    [dbo].[dTimeOfDay] AS [RequiredTimeTable]
+ON
+    CONVERT(TIME, [NorthWind2015].[dbo].[Orders].[RequiredDate]) = [RequiredTimeTable].[formattedTime]
+GROUP BY
+    [NorthWind2015].[dbo].[Orders].[OrderID],
+    [NorthWind2015].[dbo].[OrderItems].[OrderID],
+    [NorthWind2015].[dbo].[Orders].[CustomerID],
+    [dbo].[dCustomers].[CustomerID],
+    [NorthWind2015].[dbo].[Orders].[EmployeeID],
+    [NorthWind2015].[dbo].[Orders].[PaymentMethod],
+    [dbo].[dPaymentMethods].[PaymentMethodID],
+    [NorthWind2015].[dbo].[Orders].[ShipVia],
+    [dbo].[dShippments].[ShippmentID],
+    [dbo].[dShippers].[ShipperID],
+    [NorthWind2015].[dbo].[Orders].[ShipName],
+    [NorthWind2015].[dbo].[Orders].[ShipCityId],
+    [NorthWind2015].[dbo].[Orders].[OrderDate],
+    [NorthWind2015].[dbo].[Orders].[RequiredDate],
+    [NorthWind2015].[dbo].[Orders].[ShippedDate],
+    [NorthWind2015].[dbo].[Orders].[Freight],
+    [OrderDateTable].[idDate],
+    [ShippedDateTable].[idDate],
+    [RequiredDateTable].[idDate],
+    [OrderTimeTable].[idTimeOfDay],
+    [ShippedTimeTable].[idTimeOfDay],
+    [RequiredTimeTable].[idTimeOfDay]
+
+UPDATE [dbo].[cOrders] SET [PaymentMethodID] = @UnknownPaymentMethodID WHERE [PaymentMethodID] IS NULL
+UPDATE [dbo].[cOrders] SET [ShippmentID] = 1 WHERE [ShippmentID] IS NULL
+UPDATE [dbo].[cOrders] SET [RequiredDateID] = 1 WHERE [RequiredDateID] IS NULL
+UPDATE [dbo].[cOrders] SET [RequiredTimeID] = 1 WHERE [RequiredTimeID] IS NULL
+UPDATE [dbo].[cOrders] SET [ShippedDateID] = 1 WHERE [ShippedDateID] IS NULL
+UPDATE [dbo].[cOrders] SET [ShippedTimeID] = 1 WHERE [ShippedTimeID] IS NULL
+
+
+-- ADD CONSTRAINTS
+ALTER TABLE [dbo].[cOrders] ADD CONSTRAINT PK_cOrders PRIMARY KEY (OrderID)
+ALTER TABLE [dbo].[cOrderItems] ADD CONSTRAINT PK_cOrderItems PRIMARY KEY (OrderID, ProductID)
+
+ALTER TABLE [dbo].[cOrderItems] ADD CONSTRAINT FK_cOrderItems_OrderID FOREIGN KEY (OrderID) REFERENCES [dbo].[cOrders](OrderID)
+ALTER TABLE [dbo].[cOrderItems] ADD CONSTRAINT FK_cOrderItems_ProductID FOREIGN KEY (ProductID) REFERENCES [dbo].[dProducts](ProductID)
+ALTER TABLE [dbo].[cOrderItems] ADD CONSTRAINT FK_cOrderItems_CustomerID FOREIGN KEY (CustomerID) REFERENCES [dbo].[dCustomers](CustomerID)
+ALTER TABLE [dbo].[cOrderItems] ADD CONSTRAINT FK_cOrderItems_EmployeeID FOREIGN KEY (EmployeeID) REFERENCES [dbo].[dEmployees](EmployeeID)
+ALTER TABLE [dbo].[cOrderItems] ADD CONSTRAINT FK_cOrderItems_PaymentMethodID FOREIGN KEY (PaymentMethodID) REFERENCES [dbo].[dPaymentMethods](PaymentMethodID)
+ALTER TABLE [dbo].[cOrderItems] ADD CONSTRAINT FK_cOrderItems_ShipperID FOREIGN KEY (ShipperID) REFERENCES [dbo].[dShippers](ShipperID)
+ALTER TABLE [dbo].[cOrderItems] ADD CONSTRAINT FK_cOrderItems_ShippmentID FOREIGN KEY (ShippmentID) REFERENCES [dbo].[dShippments](ShippmentID)
+ALTER TABLE [dbo].[cOrderItems] ADD CONSTRAINT FK_cOrderItems_OrderDateID FOREIGN KEY (OrderDateID) REFERENCES [dbo].[dDate](idDate)
+ALTER TABLE [dbo].[cOrderItems] ADD CONSTRAINT FK_cOrderItems_OrderTimeID FOREIGN KEY (OrderTimeID) REFERENCES [dbo].[dTimeOfDay](idTimeOfDay)
+ALTER TABLE [dbo].[cOrderItems] ADD CONSTRAINT FK_cOrderItems_RequiredDateID FOREIGN KEY (RequiredDateID) REFERENCES [dbo].[dDate](idDate)
+ALTER TABLE [dbo].[cOrderItems] ADD CONSTRAINT FK_cOrderItems_RequiredTimeID FOREIGN KEY (RequiredTimeID) REFERENCES [dbo].[dTimeOfDay](idTimeOfDay)
+ALTER TABLE [dbo].[cOrderItems] ADD CONSTRAINT FK_cOrderItems_ShippedDateID FOREIGN KEY (ShippedDateID) REFERENCES [dbo].[dDate](idDate)
+ALTER TABLE [dbo].[cOrderItems] ADD CONSTRAINT FK_cOrderItems_ShippedTimeID FOREIGN KEY (ShippedTimeID) REFERENCES [dbo].[dTimeOfDay](idTimeOfDay)
+ALTER TABLE [dbo].[cOrderItems] ADD CONSTRAINT FK_cOrderItems_DiscountID FOREIGN KEY (DiscountID) REFERENCES [dbo].[dDiscounts](DiscountID)
+
+ALTER TABLE [dbo].[cOrders] ADD CONSTRAINT FK_cOrders_CustomerID FOREIGN KEY (CustomerID) REFERENCES [dbo].[dCustomers](CustomerID)
+ALTER TABLE [dbo].[cOrders] ADD CONSTRAINT FK_cOrders_EmployeeID FOREIGN KEY (EmployeeID) REFERENCES [dbo].[dEmployees](EmployeeID)
+ALTER TABLE [dbo].[cOrders] ADD CONSTRAINT FK_cOrders_PaymentMethodID FOREIGN KEY (PaymentMethodID) REFERENCES [dbo].[dPaymentMethods](PaymentMethodID)
+ALTER TABLE [dbo].[cOrders] ADD CONSTRAINT FK_cOrders_ShipperID FOREIGN KEY (ShipperID) REFERENCES [dbo].[dShippers](ShipperID)
+ALTER TABLE [dbo].[cOrders] ADD CONSTRAINT FK_cOrders_ShippmentID FOREIGN KEY (ShippmentID) REFERENCES [dbo].[dShippments](ShippmentID)
+ALTER TABLE [dbo].[cOrders] ADD CONSTRAINT FK_cOrders_OrderDateID FOREIGN KEY (OrderDateID) REFERENCES [dbo].[dDate](idDate)
+ALTER TABLE [dbo].[cOrders] ADD CONSTRAINT FK_cOrders_OrderTimeID FOREIGN KEY (OrderTimeID) REFERENCES [dbo].[dTimeOfDay](idTimeOfDay)
+ALTER TABLE [dbo].[cOrders] ADD CONSTRAINT FK_cOrders_RequiredDateID FOREIGN KEY (RequiredDateID) REFERENCES [dbo].[dDate](idDate)
+ALTER TABLE [dbo].[cOrders] ADD CONSTRAINT FK_cOrders_RequiredTimeID FOREIGN KEY (RequiredTimeID) REFERENCES [dbo].[dTimeOfDay](idTimeOfDay)
+ALTER TABLE [dbo].[cOrders] ADD CONSTRAINT FK_cOrders_ShippedDateID FOREIGN KEY (ShippedDateID) REFERENCES [dbo].[dDate](idDate)
+ALTER TABLE [dbo].[cOrders] ADD CONSTRAINT FK_cOrders_ShippedTimeID FOREIGN KEY (ShippedTimeID) REFERENCES [dbo].[dTimeOfDay](idTimeOfDay)
