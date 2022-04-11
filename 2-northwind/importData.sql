@@ -124,7 +124,6 @@ INSERT INTO [dbo].[dProducts] (
     [SupplierContactName],
     [SupplierContactTitle],
     [SupplierAddress],
-
     [SupplierPostalCode],
     [SupplierCityName],
     [SupplierRegion],
@@ -191,7 +190,7 @@ UPDATE [dbo].[dProducts] SET [CountryOfOrigin] = 'unknown' WHERE [CountryOfOrigi
 
 
 -- IMPORT PAYMENT METHODS
-INSERT INTO [dbo].[dPaymentMethod] (
+INSERT INTO [dbo].[dPaymentMethods] (
     [PaymentMethod]
 )
 SELECT DISTINCT
@@ -199,7 +198,7 @@ SELECT DISTINCT
 FROM
     [NorthWind2015].[dbo].[Orders]
 
-UPDATE [dbo].[dPaymentMethod] SET [PaymentMethod] = 'unknown' WHERE [PaymentMethod] IS NULL
+UPDATE [dbo].[dPaymentMethods] SET [PaymentMethod] = 'unknown' WHERE [PaymentMethod] IS NULL
 
 
 -- IMPORT SHIPMENTS
@@ -243,3 +242,100 @@ FROM
     [NorthWind2015].[dbo].[OrderItems]
 
 UPDATE [dbo].[dDiscounts] SET [DiscountDesc] = 'unknown' WHERE [DiscountDesc] IS NULL
+
+
+-- IMPORT ORDER ITEMS
+INSERT INTO [dbo].[fOrderItems] (
+    [OrderID],
+    [ProductID],
+    [CustomerID],
+    [EmployeeID],
+    [PaymentMethodID],
+    [ShipperID],
+    [ShippmentID],
+    [OrderDateID],
+    [OrderTimeID],
+    [RequiredDateID],
+    [RequiredTimeID],
+    [ShippedDateID],
+    [ShippedTimeID],
+    [UnitPrice],
+    [Quantity],
+    [Discount],
+    [DiscountID],
+    [UnitPriceWithDiscount]
+)
+SELECT
+    [NorthWind2015].[dbo].[OrderItems].[OrderId],
+    [NorthWind2015].[dbo].[OrderItems].[ProductID],
+    [dbo].[dCustomers].[CustomerID],
+    [NorthWind2015].[dbo].[Orders].[EmployeeID],
+    [dbo].[dPaymentMethods].[PaymentMethodID],
+    [dbo].[dShippers].[ShipperID],
+    (
+        SELECT TOP 1
+            [dbo].[dShippments].[ShippmentID]
+        FROM
+            [dbo].[dShippments]
+        WHERE
+            [dbo].[dShippments].[ShipName] = [NorthWind2015].[dbo].[Orders].[ShipName]
+        AND
+            [dbo].[dShippments].[ShipAddress] = [NorthWind2015].[dbo].[Orders].[ShipAddress]
+    ),
+    [OrderDateTable].[idDate],
+    [OrderTimeTable].[idTimeOfDay],
+    [ShippedDateTable].[idDate],
+    [ShippedTimeTable].[idTimeOfDay],
+    [RequiredDateTable].[idDate],
+    [RequiredTimeTable].[idTimeOfDay],
+    [NorthWind2015].[dbo].[OrderItems].[UnitPrice],
+    [NorthWind2015].[dbo].[OrderItems].[Quantity],
+    IIF([NorthWind2015].[dbo].[OrderItems].[Discount] > 0.0, 1, 0),
+    [dbo].[dDiscounts].[DiscountID],
+    [NorthWind2015].[dbo].[OrderItems].[UnitPrice] * (1 - [NorthWind2015].[dbo].[OrderItems].[Discount])
+FROM
+    [NorthWind2015].[dbo].[OrderItems]
+LEFT JOIN
+    [NorthWind2015].[dbo].[Orders]
+ON
+    [NorthWind2015].[dbo].[orderItems].[OrderID] = [NorthWind2015].[dbo].[Orders].[OrderID]
+LEFT JOIN
+    [dbo].[dPaymentMethods]
+ON
+    [NorthWind2015].[dbo].[Orders].[PaymentMethod] = [dbo].[dPaymentMethods].[PaymentMethod]
+LEFT JOIN
+    [dbo].[dCustomers]
+ON
+    [NorthWind2015].[dbo].[Orders].[CustomerID] = [dbo].[dCustomers].[CustomerIDDB]
+LEFT JOIN
+    [dbo].[dShippers]
+ON
+    [NorthWind2015].[dbo].[Orders].[ShipVia] = [dbo].[dShippers].[ShipperID]
+LEFT JOIN
+    [dbo].[dDiscounts]
+ON
+    [NorthWind2015].[dbo].[OrderItems].[DiscountDesc] = [dbo].[dDiscounts].[DiscountDesc]
+LEFT JOIN
+    [dbo].[dDate] AS [OrderDateTable]
+ON
+    CONVERT(DATE, [NorthWind2015].[dbo].[Orders].[OrderDate]) = [OrderDateTable].[date]
+LEFT JOIN
+    [dbo].[dDate] AS [ShippedDateTable]
+ON
+    CONVERT(DATE, [NorthWind2015].[dbo].[Orders].[ShippedDate]) = [ShippedDateTable].[date]
+LEFT JOIN
+    [dbo].[dDate] AS [RequiredDateTable]
+ON
+    CONVERT(DATE, [NorthWind2015].[dbo].[Orders].[RequiredDate]) = [RequiredDateTable].[date]
+LEFT JOIN
+    [dbo].[dTimeOfDay] AS [OrderTimeTable]
+ON
+    CONVERT(TIME, [NorthWind2015].[dbo].[Orders].[OrderDate]) = [OrderTimeTable].[formattedTime]
+LEFT JOIN
+    [dbo].[dTimeOfDay] AS [ShippedTimeTable]
+ON
+    CONVERT(TIME, [NorthWind2015].[dbo].[Orders].[ShippedDate]) = [ShippedTimeTable].[formattedTime]
+LEFT JOIN
+    [dbo].[dTimeOfDay] AS [RequiredTimeTable]
+ON
+    CONVERT(TIME, [NorthWind2015].[dbo].[Orders].[RequiredDate]) = [RequiredTimeTable].[formattedTime]

@@ -69,7 +69,7 @@ CREATE TABLE [dbo].[dProducts] (
 )
 
 -- ADDITIONAL TABLES
-CREATE TABLE [dbo].[dPaymentMethod] (
+CREATE TABLE [dbo].[dPaymentMethods] (
     [PaymentMethodID] INT IDENTITY NOT NULL PRIMARY KEY,
     [PaymentMethod] VARCHAR(10)
 )
@@ -91,9 +91,8 @@ CREATE TABLE [dbo].[dDiscounts] (
 
 -- FACT TABLES
 CREATE TABLE [dbo].[fOrderItems] (
-    [OrderItemID] INT IDENTITY NOT NULL PRIMARY KEY,
-    [OrderID] INT,
-    [ProductID] INT,
+    [OrderID] INT NOT NULL,
+    [ProductID] INT NOT NULL,
     [CustomerID] INT,
     [EmployeeID] INT,
     [PaymentMethodID] INT,
@@ -107,7 +106,7 @@ CREATE TABLE [dbo].[fOrderItems] (
     [ShippedTimeID] INT,
     [UnitPrice] MONEY,
     [Quantity] INT,
-    [Discount] DECIMAL(2),
+    [Discount] REAL,
     [DiscountID] INT,
     [UnitPriceWithDiscount] MONEY
 )
@@ -133,14 +132,12 @@ CREATE TABLE [dbo].[fOrders] (
     [DiscountApplied] BIT,
     [TotalDiscount] MONEY,
     [TotalItemsPriceWithoutDiscount] MONEY,
-    [OrderedToShippedHours] INT,
-    [OrderedToRequiredHours] INT,
-    [ShippedToRequiredHours] INT,
-    [Shipped] BIT,
-    [Delivered] BIT
+    [OrderedToShippedDuration] INT,
+    [Shipped] BIT
 )
 
 -- ADD CONSTRAINTS
+ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT PK_fOrderItems PRIMARY KEY (OrderID, ProductID)
 ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_OrderID FOREIGN KEY (OrderID) REFERENCES [dbo].[fOrders](OrderID)
 ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_ProductID FOREIGN KEY (ProductID) REFERENCES [dbo].[dProducts](ProductID)
 ALTER TABLE [dbo].[fOrderItems] ADD CONSTRAINT FK_fOrderItems_CustomerID FOREIGN KEY (CustomerID) REFERENCES [dbo].[dCustomers](CustomerID)
