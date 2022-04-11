@@ -245,6 +245,20 @@ UPDATE [dbo].[dDiscounts] SET [DiscountDesc] = 'unknown' WHERE [DiscountDesc] IS
 
 
 -- IMPORT ORDER ITEMS
+DECLARE @UnknownPaymentMethodID INT =
+    (
+        SELECT TOP 1 [PaymentMethodID]
+        FROM [dbo].[dPaymentMethods]
+        WHERE [PaymentMethod] = 'unknown'
+    )
+
+DECLARE @UnknownDiscountID INT =
+    (
+        SELECT TOP 1 [DiscountID]
+        FROM [dbo].[dDiscounts]
+        WHERE [DiscountDesc] = 'unknown'
+    )
+
 INSERT INTO [dbo].[fOrderItems] (
     [OrderID],
     [ProductID],
@@ -339,3 +353,11 @@ LEFT JOIN
     [dbo].[dTimeOfDay] AS [RequiredTimeTable]
 ON
     CONVERT(TIME, [NorthWind2015].[dbo].[Orders].[RequiredDate]) = [RequiredTimeTable].[formattedTime]
+
+UPDATE [dbo].[fOrderItems] SET [PaymentMethodID] = @UnknownPaymentMethodID WHERE [PaymentMethodID] IS NULL
+UPDATE [dbo].[fOrderItems] SET [ShippmentID] = 1 WHERE [ShippmentID] IS NULL
+UPDATE [dbo].[fOrderItems] SET [RequiredDateID] = 1 WHERE [RequiredDateID] IS NULL
+UPDATE [dbo].[fOrderItems] SET [RequiredTimeID] = 1 WHERE [RequiredTimeID] IS NULL
+UPDATE [dbo].[fOrderItems] SET [ShippedDateID] = 1 WHERE [ShippedDateID] IS NULL
+UPDATE [dbo].[fOrderItems] SET [ShippedTimeID] = 1 WHERE [ShippedTimeID] IS NULL
+UPDATE [dbo].[fOrderItems] SET [DiscountID] = @UnknownDiscountID WHERE [DiscountID] IS NULL
