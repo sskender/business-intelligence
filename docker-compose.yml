@@ -1,18 +1,19 @@
 version: "3.7"
 
 services:
-  sqldb:
-    container_name: sqldb
+  mssqldb:
+    container_name: mssqldb
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=PIPasswordStrong123
-      - MSSQL_PID=Developer
+      - MSSQL_PID=Express
+      # - MSSQL_PID=Developer
     ports:
       - "1433:1433"
     restart: always
     volumes:
-      - sqldb_data:/var/opt/mssql
+      - mssqldb_data:/var/opt/mssql
 
 volumes:
-  sqldb_data:
+  mssqldb_data:
