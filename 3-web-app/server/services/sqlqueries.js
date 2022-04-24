@@ -49,31 +49,57 @@ const generateQuery = (payload) => {
   const selects = new Set()
   const tables = new Set()
   const tableJoins = new Set()
+  const groups = new Set()
 
   for (const item of payload) {
-    const attrib = item.imeSQLAtrib.trim()
-    const attribName = item.imeAtrib.trim()
-    const dTable = item.nazSqlDimTablica.trim()
-    const factTable = item.nazSqlCinjTablica.trim()
+    if ('nazAgrFun' in item) {
+      const agrFun = item.nazAgrFun.trim()
+      const attrib = item.imeSQLAtrib.trim()
+      const attribName = item.imeAtrib[1].trim()
+      const factTable = item.nazSQLTablica.trim()
 
-    selects.add(`${dTable}.${attrib} AS ${attribName}`)
-    tables.add(dTable)
-    tables.add(factTable)
-    tableJoins.add(`${factTable}.${item.cinjTabKljuc.trim()} = ${dTable}.${item.dimTabKljuc.trim()}`)
+      selects.add(`${agrFun} (${factTable}.${attrib}) AS '${attribName}'`)
+      tables.add(factTable)
+    } else {
+      const attrib = item.imeSQLAtrib.trim()
+      const attribName = item.imeAtrib.trim()
+      const dimTable = item.nazSqlDimTablica.trim()
+      const dimTableId = item.dimTabKljuc.trim()
+      const factTable = item.nazSqlCinjTablica.trim()
+      const factTableId = item.cinjTabKljuc.trim()
+
+      selects.add(`${dimTable}.${attrib} AS '${attribName}'`)
+      tables.add(dimTable)
+      tables.add(factTable)
+      tableJoins.add(`${factTable}.${factTableId} = ${dimTable}.${dimTableId}`)
+      groups.add(`${dimTable}.${attrib}`) // TODO bug fix groups from fact table ???
+    }
   }
 
   const strSelects = Array.from(selects).join('\n, ')
   const strTables = Array.from(tables).sort().join(', ')
   const strJoins = Array.from(tableJoins).sort().join('\n AND ')
+  const strGroups = Array.from(groups).join('\n, ')
 
-  const tsql = `
+  let tsql = `
     SELECT
         ${strSelects}
       FROM
         ${strTables}
+  `
+  if (strJoins.length > 0) {
+    tsql += `
     WHERE
       ${strJoins}
   `
+  }
+  if (strGroups.length > 0) {
+    tsql += `
+    GROUP BY
+      ${strGroups}
+    `
+  }
+
   return tsql
 }
 
