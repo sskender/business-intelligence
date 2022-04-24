@@ -45,7 +45,7 @@ const selectDimensions = (factTableId) => {
   `
 }
 
-const generateQuery = (payload) => {
+const parsePayload = (payload) => {
   const selects = new Set()
   const tables = new Set()
   const tableJoins = new Set()
@@ -58,7 +58,7 @@ const generateQuery = (payload) => {
       const attribName = item.imeAtrib[1].trim()
       const factTable = item.nazSQLTablica.trim()
 
-      selects.add(`${agrFun} (${factTable}.${attrib}) AS '${attribName}'`)
+      selects.add(`${agrFun} (${factTable}.${attrib}) AS "${attribName}"`)
       tables.add(factTable)
     } else {
       const attrib = item.imeSQLAtrib.trim()
@@ -68,7 +68,7 @@ const generateQuery = (payload) => {
       const factTable = item.nazSqlCinjTablica.trim()
       const factTableId = item.cinjTabKljuc.trim()
 
-      selects.add(`${dimTable}.${attrib} AS '${attribName}'`)
+      selects.add(`${dimTable}.${attrib} AS "${attribName}"`)
       tables.add(dimTable)
       tables.add(factTable)
       tableJoins.add(`${factTable}.${factTableId} = ${dimTable}.${dimTableId}`)
@@ -76,10 +76,16 @@ const generateQuery = (payload) => {
     }
   }
 
-  const strSelects = Array.from(selects).join('\n, ')
-  const strTables = Array.from(tables).sort().join(', ')
-  const strJoins = Array.from(tableJoins).sort().join('\n AND ')
-  const strGroups = Array.from(groups).join('\n, ')
+  return { selects, tables, tableJoins, groups }
+}
+
+const generateQuery = (payload) => {
+  // TODO fix spacing and new lines
+  const { selects, tables, tableJoins, groups } = parsePayload(payload)
+  const strSelects = Array.from(selects).join(',\n    ')
+  const strTables = Array.from(tables).sort().join(',\n    ')
+  const strJoins = Array.from(tableJoins).sort().join('\n    AND ')
+  const strGroups = Array.from(groups).join(',\n    ')
 
   let tsql = `
     SELECT
@@ -87,12 +93,14 @@ const generateQuery = (payload) => {
       FROM
         ${strTables}
   `
+
   if (strJoins.length > 0) {
     tsql += `
     WHERE
       ${strJoins}
   `
   }
+
   if (strGroups.length > 0) {
     tsql += `
     GROUP BY
