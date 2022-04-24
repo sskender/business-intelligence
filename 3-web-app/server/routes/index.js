@@ -10,7 +10,7 @@ router.get('/tables', async (req, res, next) => {
     const tsql = sqlQueries.selectFactTables()
     const query = await req.app.locals.db.query(tsql)
     const records = query.recordset
-    const result = { query: tsql, result: records }
+    const result = { query: tsql, results: records }
 
     return res.status(httpStatus.OK).json({
       success: true,
@@ -29,7 +29,7 @@ router.get('/measures/:tableId', async (req, res, next) => {
     const tsql = sqlQueries.selectMeasures(tableId)
     const query = await req.app.locals.db.query(tsql)
     const records = query.recordset
-    const result = { query: tsql, result: records }
+    const result = { query: tsql, results: records }
 
     return res.status(httpStatus.OK).json({
       success: true,
@@ -48,7 +48,7 @@ router.get('/dimensions/:tableId', async (req, res, next) => {
     const tsql = sqlQueries.selectDimensions(tableId)
     const query = await req.app.locals.db.query(tsql)
     const records = query.recordset
-    const result = { query: tsql, result: records }
+    const result = { query: tsql, results: records }
 
     return res.status(httpStatus.OK).json({
       success: true,
@@ -63,8 +63,11 @@ router.get('/dimensions/:tableId', async (req, res, next) => {
 router.post('/query', async (req, res, next) => {
   try {
     const payload = req.body
+
     const tsql = sqlQueries.generateQuery(payload)
-    const result = { query: tsql, result: payload }
+    const query = await req.app.locals.db.query(tsql)
+    const records = query.recordset
+    const result = { query: tsql, results: records }
 
     return res.status(httpStatus.OK).json({
       success: true,
