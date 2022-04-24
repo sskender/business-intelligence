@@ -45,8 +45,41 @@ const selectDimensions = (factTableId) => {
   `
 }
 
+const generateQuery = (payload) => {
+  const selects = new Set()
+  const tables = new Set()
+  const tableJoins = new Set()
+
+  for (const item of payload) {
+    const attrib = item.imeSQLAtrib.trim()
+    const attribName = item.imeAtrib.trim()
+    const dTable = item.nazSqlDimTablica.trim()
+    const factTable = item.nazSqlCinjTablica.trim()
+
+    selects.add(`${dTable}.${attrib} AS ${attribName}`)
+    tables.add(dTable)
+    tables.add(factTable)
+    tableJoins.add(`${factTable}.${item.cinjTabKljuc.trim()} = ${dTable}.${item.dimTabKljuc.trim()}`)
+  }
+
+  const strSelects = Array.from(selects).join('\n, ')
+  const strTables = Array.from(tables).sort().join(', ')
+  const strJoins = Array.from(tableJoins).sort().join('\n AND ')
+
+  const tsql = `
+    SELECT
+        ${strSelects}
+      FROM
+        ${strTables}
+    WHERE
+      ${strJoins}
+  `
+  return tsql
+}
+
 module.exports = {
   selectFactTables,
   selectMeasures,
-  selectDimensions
+  selectDimensions,
+  generateQuery
 }

@@ -60,4 +60,20 @@ router.get('/dimensions/:tableId', async (req, res, next) => {
   }
 })
 
+router.post('/query', async (req, res, next) => {
+  try {
+    const payload = req.body
+    const tsql = sqlQueries.generateQuery(payload)
+    const result = { query: tsql, result: payload }
+
+    return res.status(httpStatus.OK).json({
+      success: true,
+      status: httpStatus.OK,
+      data: result
+    })
+  } catch (err) {
+    return next(err)
+  }
+})
+
 module.exports = router
