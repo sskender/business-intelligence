@@ -2,7 +2,7 @@ import React from "react";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Selector from "./components/Selector";
+import TableSelector from "./components/TableSelector";
 import TableTreeView from "./components/TableTreeView";
 import Editor from "./components/Editor";
 import "./App.css";
@@ -17,9 +17,9 @@ function App() {
         <Grid container rowSpacing={1} columnSpacing={1}>
           <Grid item xs={4}>
             <Paper elevation={6} sx={{ mt: 4, padding: 2, paddingLeft: 4 }}>
-              <Selector
+              <TableSelector
                 updateSelectedFactTable={setSelectedFactTable}
-              ></Selector>
+              ></TableSelector>
             </Paper>
             <Paper elevation={6} sx={{ mt: 2, padding: 2 }}>
               <TableTreeView

@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import axios from "axios";
 
-function Selector({ updateSelectedFactTable }) {
+function TableSelector({ updateSelectedFactTable }) {
   const [factTables, setFactTables] = React.useState([]);
 
   React.useEffect(() => {
@@ -56,4 +56,4 @@ function Selector({ updateSelectedFactTable }) {
   );
 }
 
-export default Selector;
+export default TableSelector;
