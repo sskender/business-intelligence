@@ -160,11 +160,15 @@ function TableTreeView({ factTableId, updateResults }) {
           })}
         </TreeItem>
 
-        <TreeItem nodeId={`dim-tree`} label="Dimenzije">
+        <TreeItem nodeId={`dim-tree`} label="Dimenzije" sx={{ pt: 4 }}>
           {[...uniqueTables.keys()].map((dimTableId) => {
             const dimTableName = uniqueTables.get(dimTableId);
             return (
-              <TreeItem nodeId={`${dimTableId}`} label={dimTableName}>
+              <TreeItem
+                nodeId={`${dimTableId}`}
+                label={dimTableName}
+                sx={{ padding: 1 }}
+              >
                 {dimensions.map((item, index) => {
                   if (item.sifTablica === dimTableId) {
                     const nodeId = `${dimTableId}-${item.rbrAtrib}`;

@@ -14,14 +14,14 @@ function App() {
   return (
     <div className="App">
       <Container>
-        <Grid container rowSpacing={1} columnSpacing={2}>
+        <Grid container rowSpacing={1} columnSpacing={1}>
           <Grid item xs={4}>
-            <Paper elevation={3}>
+            <Paper elevation={6} sx={{ mt: 4, padding: 2, paddingLeft: 4 }}>
               <Selector
                 updateSelectedFactTable={setSelectedFactTable}
               ></Selector>
             </Paper>
-            <Paper elevation={3}>
+            <Paper elevation={6} sx={{ mt: 2, padding: 2 }}>
               <TableTreeView
                 factTableId={selectedFactTable}
                 updateResults={setResults}
@@ -30,10 +30,12 @@ function App() {
           </Grid>
 
           <Grid item xs={8}>
-            <Paper elevation={3}>
+            <Paper elevation={6} sx={{ mt: 4, ml: 2, padding: 2 }}>
               <Editor sqlQuery={results.query} />
             </Paper>
-            <Paper elevation={3}>data table</Paper>
+            <Paper elevation={6} sx={{ mt: 4, ml: 2, padding: 4 }}>
+              data table
+            </Paper>
           </Grid>
         </Grid>
       </Container>
