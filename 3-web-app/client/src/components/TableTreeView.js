@@ -26,7 +26,7 @@ function TableTreeView({ factTableId, updateResults }) {
       try {
         // fetch from server
         const response = await axios.get(
-          `http://localhost:3000/api/dimensions/${factTableId}`
+          `${process.env.REACT_APP_API}/api/dimensions/${factTableId}`
         );
         const data = response.data;
         const results = data.data.results;
@@ -51,7 +51,7 @@ function TableTreeView({ factTableId, updateResults }) {
       try {
         // fetch from server
         const response = await axios.get(
-          `http://localhost:3000/api/measures/${factTableId}`
+          `${process.env.REACT_APP_API}/api/measures/${factTableId}`
         );
         const data = response.data;
         const results = data.data.results;
@@ -73,7 +73,7 @@ function TableTreeView({ factTableId, updateResults }) {
     if (requestData === undefined || requestData === null) return;
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/query",
+        `${process.env.REACT_APP_API}/api/query`,
         requestData
       );
       const data = response.data;

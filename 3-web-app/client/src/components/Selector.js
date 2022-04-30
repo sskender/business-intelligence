@@ -13,7 +13,9 @@ function Selector({ updateSelectedFactTable }) {
     async function fetchFactTables() {
       try {
         // fetch from server
-        const response = await axios.get("http://localhost:3000/api/tables");
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/api/tables`
+        );
         const data = response.data;
         const results = data.data.results;
 
