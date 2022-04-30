@@ -2,7 +2,7 @@ import * as React from "react";
 
 function Editor({ sqlQuery }) {
   return (
-    <div>
+    <div className="display-linebreak">
       SQL:
       <span>{sqlQuery}</span>
     </div>
