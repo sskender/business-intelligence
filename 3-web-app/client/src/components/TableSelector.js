@@ -8,6 +8,7 @@ import axios from "axios";
 
 function TableSelector({ updateSelectedFactTable }) {
   const [factTables, setFactTables] = React.useState([]);
+  const [defaultFactTable, setDefaultFactTable] = React.useState(null);
 
   React.useEffect(() => {
     async function fetchFactTables() {
@@ -21,6 +22,10 @@ function TableSelector({ updateSelectedFactTable }) {
 
         // update default data entries
         setFactTables(results);
+        if (results.length > 0) {
+          setDefaultFactTable(results[0]?.sifTablica);
+          updateSelectedFactTable(results[0]?.sifTablica);
+        }
       } catch (err) {
         console.error(err);
       }
@@ -30,6 +35,7 @@ function TableSelector({ updateSelectedFactTable }) {
   }, [updateSelectedFactTable]);
 
   const handleFactTableChange = (event) => {
+    setDefaultFactTable(event.target.value);
     updateSelectedFactTable(event.target.value);
   };
 
@@ -40,6 +46,7 @@ function TableSelector({ updateSelectedFactTable }) {
         <RadioGroup
           name="controlled-radio-buttons-group"
           onChange={handleFactTableChange}
+          value={defaultFactTable}
         >
           {factTables.map((item) => {
             return (
