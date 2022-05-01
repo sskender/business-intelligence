@@ -149,6 +149,8 @@ function TableTreeView({ factTableId, updateResults }) {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      size="small"
+                      checked={checkedMeasuresState[index] !== false}
                       onChange={() => handleMeasureCheckboxChange(index)}
                     />
                   }
@@ -177,6 +179,8 @@ function TableTreeView({ factTableId, updateResults }) {
                         <FormControlLabel
                           control={
                             <Checkbox
+                              size="small"
+                              checked={checkedDimState[index] !== false}
                               onChange={() => handleDimCheckboxChange(index)}
                             />
                           }
