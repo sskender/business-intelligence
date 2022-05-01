@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const morgan = require('morgan')
 const sql = require('mssql')
 const dotenv = require('dotenv')
 
@@ -8,6 +9,7 @@ dotenv.config()
 const appPool = new sql.ConnectionPool(process.env.DB_CONN_STRING)
 const app = express()
 
+app.use(morgan('common'))
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

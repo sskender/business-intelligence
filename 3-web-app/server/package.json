@@ -17,6 +17,7 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "http-status": "^1.5.1",
+    "morgan": "^1.10.0",
     "mssql": "^8.1.0"
   },
   "devDependencies": {
