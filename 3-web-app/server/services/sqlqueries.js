@@ -50,6 +50,7 @@ const parsePayload = (payload) => {
   const tables = new Set()
   const tableJoins = new Set()
   const groups = new Set()
+  // let measuresInUse = false
 
   for (const item of payload) {
     if ('nazAgrFun' in item) {
@@ -60,6 +61,7 @@ const parsePayload = (payload) => {
 
       selects.add(`${agrFun} (${factTable}.${attrib}) AS "${attribName}"`)
       tables.add(factTable)
+      // measuresInUse = true
     } else {
       const attrib = item.imeSQLAtrib.trim()
       const attribName = item.imeAtrib.trim()
@@ -75,6 +77,10 @@ const parsePayload = (payload) => {
       groups.add(`${dimTable}.${attrib}`) // TODO bug fix groups from fact table ???
     }
   }
+
+  // if (!measuresInUse) {
+  //   groups.clear()
+  // }
 
   return { selects, tables, tableJoins, groups }
 }
