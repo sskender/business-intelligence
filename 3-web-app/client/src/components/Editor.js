@@ -19,7 +19,7 @@ function Editor({ sqlQuery }) {
             color: "green",
           },
         }}
-        sx={{ maxWidth: "100%" }}
+        sx={{ maxWidth: "100%", maxHeight: "100%" }}
       />
     </Box>
   );
