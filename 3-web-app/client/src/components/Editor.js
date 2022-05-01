@@ -12,6 +12,7 @@ function Editor({ sqlQuery }) {
         defaultValue={sqlQuery}
         fullWidth
         InputProps={{
+          readOnly: true,
           style: {
             readOnly: true,
             fontFamily: "Monospace",
