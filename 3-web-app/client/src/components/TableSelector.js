@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import axios from "axios";
 
-function TableSelector({ updateSelectedFactTable }) {
+function TableSelector({ updateSelectedFactTable, updateResults }) {
   const [factTables, setFactTables] = React.useState([]);
   const [defaultFactTable, setDefaultFactTable] = React.useState(null);
 
@@ -22,6 +22,7 @@ function TableSelector({ updateSelectedFactTable }) {
 
         // update default data entries
         setFactTables(results);
+        updateResults({});
         if (results.length > 0) {
           setDefaultFactTable(results[0]?.sifTablica);
           updateSelectedFactTable(results[0]?.sifTablica);
@@ -32,11 +33,12 @@ function TableSelector({ updateSelectedFactTable }) {
     }
 
     fetchFactTables();
-  }, [updateSelectedFactTable]);
+  }, [updateSelectedFactTable, updateResults]);
 
   const handleFactTableChange = (event) => {
     setDefaultFactTable(event.target.value);
     updateSelectedFactTable(event.target.value);
+    updateResults({});
   };
 
   return (
@@ -48,7 +50,7 @@ function TableSelector({ updateSelectedFactTable }) {
           onChange={handleFactTableChange}
           value={defaultFactTable}
         >
-          {factTables.map((item) => {
+          {factTables?.map((item) => {
             return (
               <FormControlLabel
                 value={item.sifTablica}

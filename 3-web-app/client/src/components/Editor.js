@@ -9,7 +9,7 @@ function Editor({ sqlQuery }) {
         id="outlined-multiline-static"
         label="SQL Query"
         multiline
-        defaultValue={sqlQuery}
+        value={sqlQuery}
         fullWidth
         InputProps={{
           readOnly: true,

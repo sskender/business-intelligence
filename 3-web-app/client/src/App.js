@@ -9,7 +9,7 @@ import "./App.css";
 
 function App() {
   const [selectedFactTable, setSelectedFactTable] = React.useState(null);
-  const [results, setResults] = React.useState([]);
+  const [results, setResults] = React.useState({});
 
   return (
     <div className="App">
@@ -18,6 +18,7 @@ function App() {
           <Paper elevation={8} sx={{ mt: 4, padding: 2, paddingLeft: 4 }}>
             <TableSelector
               updateSelectedFactTable={setSelectedFactTable}
+              updateResults={setResults}
             ></TableSelector>
           </Paper>
           <Paper elevation={8} sx={{ mt: 2, padding: 2 }}>
@@ -27,13 +28,12 @@ function App() {
             ></TableTreeView>
           </Paper>
         </Grid>
-
         <Grid item xs={8}>
           <Paper elevation={8} sx={{ mt: 4, ml: 2, padding: 2 }}>
-            <Editor sqlQuery={results.query} />
+            <Editor sqlQuery={results?.query || ""} />
           </Paper>
           <Paper elevation={8} sx={{ mt: 4, ml: 2, padding: 1 }}>
-            <DataTable data={results.results}></DataTable>
+            <DataTable data={results?.results || []}></DataTable>
           </Paper>
         </Grid>
       </Grid>

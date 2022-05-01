@@ -81,6 +81,7 @@ function TableTreeView({ factTableId, updateResults }) {
       // re-render
       updateResults(data.data);
     } catch (err) {
+      updateResults({});
       console.error(err);
     }
   };

@@ -12,6 +12,7 @@ function DataTable({ data }) {
 
   React.useEffect(() => {
     if (data === undefined || data === null) return;
+    setHeader([]);
     if (data.length > 0) {
       setHeader(Object.keys(data[0]));
     }
