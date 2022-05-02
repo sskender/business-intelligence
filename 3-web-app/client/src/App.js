@@ -32,7 +32,7 @@ function App() {
           <Paper elevation={8} sx={{ mt: 4, ml: 2, padding: 2 }}>
             <Editor sqlQuery={results?.query || ""} />
           </Paper>
-          <Paper elevation={8} sx={{ mt: 4, ml: 2, padding: 1 }}>
+          <Paper elevation={8} sx={{ mt: 4, ml: 2, padding: 0 }}>
             <DataTable data={results?.results || []}></DataTable>
           </Paper>
         </Grid>
