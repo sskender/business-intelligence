@@ -14,3 +14,8 @@ Dimensional Model, Data Warehouse Architecture, Reporting and Visualization Tool
 
 #### Try online
 [SQL FIDDLE](http://sqlfiddle.com/#!18)
+
+### Web App screenshots
+
+![Screenshot 1](3-web-app/doc/pic1.png?raw=true)
+![Screenshot 2](3-web-app/doc/pic2.png?raw=true)
